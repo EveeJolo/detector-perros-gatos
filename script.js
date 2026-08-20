@@ -20,6 +20,85 @@ let animalElegido = null;
 
 
 // ============================================================
+// SONIDOS
+// ============================================================
+
+// Contadores independientes para perro y gato
+let indicePerro = 0;
+let indiceGato = 0;
+
+
+// Lista de sonidos de perro
+const sonidosPerro = [
+    "sonidos/perro1.wav",
+    "sonidos/perro2.wav",
+    "sonidos/perro3.wav",
+    "sonidos/perro4.wav",
+    "sonidos/perro5.wav"
+];
+
+
+// Lista de sonidos de gato
+const sonidosGato = [
+    "sonidos/gato1.wav",
+    "sonidos/gato2.wav",
+    "sonidos/gato3.wav",
+    "sonidos/gato4.wav",
+    "sonidos/gato5.wav"
+];
+
+
+// ============================================================
+// REPRODUCIR SONIDO DE PERRO
+// ============================================================
+
+function reproducirSonidoPerro() {
+
+    const ruta =
+        sonidosPerro[indicePerro];
+
+    const audio =
+        new Audio(ruta);
+
+    audio.play();
+
+    // Avanzar al siguiente sonido
+    indicePerro++;
+
+    // Después del quinto, volver al primero
+    if (indicePerro >= sonidosPerro.length) {
+
+        indicePerro = 0;
+    }
+}
+
+
+// ============================================================
+// REPRODUCIR SONIDO DE GATO
+// ============================================================
+
+function reproducirSonidoGato() {
+
+    const ruta =
+        sonidosGato[indiceGato];
+
+    const audio =
+        new Audio(ruta);
+
+    audio.play();
+
+    // Avanzar al siguiente sonido
+    indiceGato++;
+
+    // Después del quinto, volver al primero
+    if (indiceGato >= sonidosGato.length) {
+
+        indiceGato = 0;
+    }
+}
+
+
+// ============================================================
 // CONECTAR ARDUINO
 // ============================================================
 
@@ -289,7 +368,7 @@ function comenzarAnalisis() {
     }
 
 
-    // Evitar dos análisis al mismo tiempo
+    // Evitar dos análisis simultáneos
     if (analizando) {
 
         return;
@@ -310,19 +389,21 @@ function comenzarAnalisis() {
         );
 
 
-    // Mostrar mensaje
+    // Mostrar mensaje según el animal elegido
     if (animalElegido === "perro") {
 
         resultado.innerText =
             "🐶 Analizando tu perro...";
 
     }
+
     else if (animalElegido === "gato") {
 
         resultado.innerText =
             "🐱 Analizando tu gato...";
 
     }
+
     else {
 
         resultado.innerText =
@@ -502,6 +583,7 @@ async function mostrarResultado(
             "🐶 ¡Creo que es un PERRO!";
 
     }
+
     else {
 
         resultado.innerText =
@@ -513,28 +595,55 @@ async function mostrarResultado(
     // ENVIAR PORCENTAJE A ARDUINO
     // ========================================================
 
-    // Si el niño eligió PERRO,
-    // enviamos el porcentaje de PERRO.
-
     if (animalElegido === "perro") {
 
+        const porcentaje =
+            perro * 100;
+
+
         await enviarPorcentaje(
-            perro * 100
+            porcentaje
         );
+
+
+        // ====================================================
+        // SONIDO
+        // ====================================================
+
+        // Solo reproduce sonido si alcanza 75%
+        if (porcentaje >= 75) {
+
+            reproducirSonidoPerro();
+        }
     }
 
-
-    // Si el niño eligió GATO,
-    // enviamos el porcentaje de GATO.
 
     else if (animalElegido === "gato") {
 
+        const porcentaje =
+            gato * 100;
+
+
         await enviarPorcentaje(
-            gato * 100
+            porcentaje
         );
+
+
+        // ====================================================
+        // SONIDO
+        // ====================================================
+
+        // Solo reproduce sonido si alcanza 75%
+        if (porcentaje >= 75) {
+
+            reproducirSonidoGato();
+        }
     }
 
 
-    // Preparar para el siguiente dibujo
+    // ========================================================
+    // PREPARAR PARA EL SIGUIENTE DIBUJO
+    // ========================================================
+
     animalElegido = null;
 }
