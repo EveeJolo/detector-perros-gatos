@@ -1,0 +1,124 @@
+body {
+    margin: 0;
+
+    font-family: Arial, sans-serif;
+
+    background: #f4f4f4;
+
+    text-align: center;
+}
+
+
+.contenedor {
+    max-width: 700px;
+
+    margin: 40px auto;
+
+    background: white;
+
+    padding: 30px;
+
+    border-radius: 20px;
+
+    box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+}
+
+
+h1 {
+    font-size: 36px;
+
+    margin-bottom: 10px;
+}
+
+
+.instruccion {
+    font-size: 20px;
+
+    margin-bottom: 25px;
+}
+
+
+#webcam-container canvas {
+
+    border-radius: 15px;
+
+    border: 4px solid #333;
+}
+
+
+#resultado {
+
+    font-size: 30px;
+
+    font-weight: bold;
+
+    margin: 25px 0;
+}
+
+
+#probabilidades {
+
+    font-size: 22px;
+
+    display: flex;
+
+    justify-content: center;
+
+    gap: 40px;
+
+    margin-bottom: 25px;
+}
+
+
+button {
+
+    font-size: 20px;
+
+    padding: 12px 25px;
+
+    border: none;
+
+    border-radius: 10px;
+
+    cursor: pointer;
+}
+
+
+/* ============================================================
+   EFECTO DURANTE EL ANÁLISIS
+   ============================================================ */
+
+#webcam-container.analizando canvas {
+
+    animation: pulsoRojo 1.2s ease-in-out infinite;
+}
+
+
+/* Brillo exactamente alrededor de la cámara */
+
+@keyframes pulsoRojo {
+
+    0% {
+
+        box-shadow:
+            0 0 5px rgba(255, 0, 0, 0.35),
+            0 0 10px rgba(255, 0, 0, 0.25);
+
+    }
+
+    50% {
+
+        box-shadow:
+            0 0 10px rgba(255, 0, 0, 0.75),
+            0 0 20px rgba(255, 0, 0, 0.45);
+
+    }
+
+    100% {
+
+        box-shadow:
+            0 0 5px rgba(255, 0, 0, 0.35),
+            0 0 10px rgba(255, 0, 0, 0.25);
+
+    }
+}

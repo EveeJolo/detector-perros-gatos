@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Detector de Perros y Gatos</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <div class="contenedor">
+
+        <h1>🐶 ¿Perro o gato? 🐱</h1>
+
+        <p class="instruccion">
+            Dibujá un animal y mostralo frente a la cámara
+        </p>
+
+        <div id="webcam-container"></div>
+
+        <div id="resultado">
+            Esperando...
+        </div>
+
+        <div id="probabilidades">
+            <div>
+                🐶 Perro:
+                <span id="perro">0%</span>
+            </div>
+
+            <div>
+                🐱 Gato:
+                <span id="gato">0%</span>
+            </div>
+        </div>
+
+        <button onclick="iniciar()">
+            📷 Iniciar cámara
+        </button>
+
+        <button onclick="conectarArduino()">
+            🔌 Conectar Arduino
+        </button>
+
+        <button
+            id="boton-analizar"
+            onclick="comenzarAnalisis()">
+
+            🔎 Analizar dibujo
+
+        </button>
+
+    </div>
+
+
+    <!-- TensorFlow -->
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest/dist/tf.min.js"></script>
+
+    <!-- Teachable Machine -->
+    <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@latest/dist/teachablemachine-image.min.js"></script>
+
+    <!-- Nuestro programa -->
+    <script src="script.js"></script>
+
+</body>
+
+</html>
