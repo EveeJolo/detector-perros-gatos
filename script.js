@@ -28,7 +28,10 @@ let indicePerro = 0;
 let indiceGato = 0;
 
 
-// Lista de sonidos de perro
+// ============================================================
+// LISTA DE SONIDOS DE PERRO
+// ============================================================
+
 const sonidosPerro = [
     "sonidos/perro1.wav",
     "sonidos/perro2.wav",
@@ -38,7 +41,10 @@ const sonidosPerro = [
 ];
 
 
-// Lista de sonidos de gato
+// ============================================================
+// LISTA DE SONIDOS DE GATO
+// ============================================================
+
 const sonidosGato = [
     "sonidos/gato1.wav",
     "sonidos/gato2.wav",
@@ -46,6 +52,14 @@ const sonidosGato = [
     "sonidos/gato4.wav",
     "sonidos/gato5.wav"
 ];
+
+
+// ============================================================
+// SONIDOS DE AMARILLO Y ROJO
+// ============================================================
+
+const sonidoCasi = "sonidos/casi.wav";
+const sonidoError = "sonidos/error.wav";
 
 
 // ============================================================
@@ -95,6 +109,19 @@ function reproducirSonidoGato() {
 
         indiceGato = 0;
     }
+}
+
+
+// ============================================================
+// REPRODUCIR SONIDO GENERAL
+// ============================================================
+
+function reproducirSonido(ruta) {
+
+    const audio =
+        new Audio(ruta);
+
+    audio.play();
 }
 
 
@@ -592,7 +619,7 @@ async function mostrarResultado(
 
 
     // ========================================================
-    // ENVIAR PORCENTAJE A ARDUINO
+    // ENVIAR PORCENTAJE Y REPRODUCIR SONIDO
     // ========================================================
 
     if (animalElegido === "perro") {
@@ -601,19 +628,43 @@ async function mostrarResultado(
             perro * 100;
 
 
+        // Enviar porcentaje a Arduino
         await enviarPorcentaje(
             porcentaje
         );
 
 
         // ====================================================
-        // SONIDO
+        // VERDE: 75% O MÁS
         // ====================================================
 
-        // Solo reproduce sonido si alcanza 75%
         if (porcentaje >= 75) {
 
             reproducirSonidoPerro();
+        }
+
+
+        // ====================================================
+        // AMARILLO: 50% A MENOS DE 75%
+        // ====================================================
+
+        else if (porcentaje >= 50) {
+
+            reproducirSonido(
+                sonidoCasi
+            );
+        }
+
+
+        // ====================================================
+        // ROJO: MENOS DE 50%
+        // ====================================================
+
+        else {
+
+            reproducirSonido(
+                sonidoError
+            );
         }
     }
 
@@ -624,19 +675,43 @@ async function mostrarResultado(
             gato * 100;
 
 
+        // Enviar porcentaje a Arduino
         await enviarPorcentaje(
             porcentaje
         );
 
 
         // ====================================================
-        // SONIDO
+        // VERDE: 75% O MÁS
         // ====================================================
 
-        // Solo reproduce sonido si alcanza 75%
         if (porcentaje >= 75) {
 
             reproducirSonidoGato();
+        }
+
+
+        // ====================================================
+        // AMARILLO: 50% A MENOS DE 75%
+        // ====================================================
+
+        else if (porcentaje >= 50) {
+
+            reproducirSonido(
+                sonidoCasi
+            );
+        }
+
+
+        // ====================================================
+        // ROJO: MENOS DE 50%
+        // ====================================================
+
+        else {
+
+            reproducirSonido(
+                sonidoError
+            );
         }
     }
 
