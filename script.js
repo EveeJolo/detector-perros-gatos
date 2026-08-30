@@ -68,20 +68,15 @@ const sonidoError = "sonidos/error.wav";
 
 function reproducirSonidoPerro() {
 
-    const ruta =
-        sonidosPerro[indicePerro];
+    const ruta = sonidosPerro[indicePerro];
 
-    const audio =
-        new Audio(ruta);
+    const audio = new Audio(ruta);
 
     audio.play();
 
-    // Avanzar al siguiente sonido
     indicePerro++;
 
-    // Después del quinto, volver al primero
     if (indicePerro >= sonidosPerro.length) {
-
         indicePerro = 0;
     }
 }
@@ -93,20 +88,15 @@ function reproducirSonidoPerro() {
 
 function reproducirSonidoGato() {
 
-    const ruta =
-        sonidosGato[indiceGato];
+    const ruta = sonidosGato[indiceGato];
 
-    const audio =
-        new Audio(ruta);
+    const audio = new Audio(ruta);
 
     audio.play();
 
-    // Avanzar al siguiente sonido
     indiceGato++;
 
-    // Después del quinto, volver al primero
     if (indiceGato >= sonidosGato.length) {
-
         indiceGato = 0;
     }
 }
@@ -118,8 +108,7 @@ function reproducirSonidoGato() {
 
 function reproducirSonido(ruta) {
 
-    const audio =
-        new Audio(ruta);
+    const audio = new Audio(ruta);
 
     audio.play();
 }
@@ -209,9 +198,9 @@ async function escucharArduino() {
                 );
 
 
-                // ============================================
+                // ====================================================
                 // BOTÓN PERRO
-                // ============================================
+                // ====================================================
 
                 if (mensaje === "PERRO") {
 
@@ -225,9 +214,9 @@ async function escucharArduino() {
                 }
 
 
-                // ============================================
+                // ====================================================
                 // BOTÓN GATO
-                // ============================================
+                // ====================================================
 
                 if (mensaje === "GATO") {
 
@@ -320,14 +309,12 @@ async function iniciar() {
         URL + "metadata.json";
 
 
-    // Cargar modelo de Teachable Machine
     modelo = await tmImage.load(
         modelURL,
         metadataURL
     );
 
 
-    // Tamaño de la cámara
     const tamaño = 400;
 
 
@@ -339,6 +326,7 @@ async function iniciar() {
 
 
     await webcam.setup();
+
     await webcam.play();
 
 
@@ -384,7 +372,6 @@ async function actualizar() {
 
 function comenzarAnalisis() {
 
-    // La cámara tiene que estar iniciada
     if (!ejecutando) {
 
         alert(
@@ -395,9 +382,7 @@ function comenzarAnalisis() {
     }
 
 
-    // Evitar dos análisis simultáneos
     if (analizando) {
-
         return;
     }
 
@@ -416,7 +401,7 @@ function comenzarAnalisis() {
         );
 
 
-    // Mostrar mensaje según el animal elegido
+    // Mensaje dependiendo del botón utilizado
     if (animalElegido === "perro") {
 
         resultado.innerText =
@@ -438,13 +423,11 @@ function comenzarAnalisis() {
     }
 
 
-    // Activar efecto rojo
     marco.classList.add(
         "analizando"
     );
 
 
-    // Analizar durante 3 segundos
     analizarDuranteTresSegundos();
 }
 
@@ -509,14 +492,12 @@ async function analizarDuranteTresSegundos() {
         }
 
 
-        // Acumular resultados
         sumaPerro += perro;
         sumaGato += gato;
 
         cantidadMuestras++;
 
 
-        // Pequeña pausa entre muestras
         await new Promise(
             resolver =>
                 setTimeout(
@@ -527,7 +508,6 @@ async function analizarDuranteTresSegundos() {
     }
 
 
-    // Calcular promedio
     const perroFinal =
         sumaPerro /
         cantidadMuestras;
@@ -569,13 +549,15 @@ async function mostrarResultado(
         );
 
 
-    // Quitar efecto rojo
     marco.classList.remove(
         "analizando"
     );
 
 
-    // Mostrar porcentajes
+    // ========================================================
+    // MOSTRAR PORCENTAJES
+    // ========================================================
+
     document
         .getElementById(
             "probabilidades"
@@ -601,7 +583,25 @@ async function mostrarResultado(
 
 
     // ========================================================
-    // RESULTADO VISUAL
+    // SI SE USÓ EL BOTÓN DE LA PÁGINA
+    // LA IA ELIGE EL ANIMAL CON MAYOR PORCENTAJE
+    // ========================================================
+
+    if (animalElegido === null) {
+
+        if (perro > gato) {
+
+            animalElegido = "perro";
+
+        } else {
+
+            animalElegido = "gato";
+        }
+    }
+
+
+    // ========================================================
+    // RESULTADO EN PANTALLA
     // ========================================================
 
     if (perro > gato) {
@@ -609,9 +609,7 @@ async function mostrarResultado(
         resultado.innerText =
             "🐶 ¡Creo que es un PERRO!";
 
-    }
-
-    else {
+    } else {
 
         resultado.innerText =
             "🐱 ¡Creo que es un GATO!";
@@ -619,7 +617,7 @@ async function mostrarResultado(
 
 
     // ========================================================
-    // ENVIAR PORCENTAJE Y REPRODUCIR SONIDO
+    // PERRO
     // ========================================================
 
     if (animalElegido === "perro") {
@@ -634,20 +632,14 @@ async function mostrarResultado(
         );
 
 
-        // ====================================================
-        // VERDE: 75% O MÁS
-        // ====================================================
-
+        // Verde: 75% o más
         if (porcentaje >= 75) {
 
             reproducirSonidoPerro();
         }
 
 
-        // ====================================================
-        // AMARILLO: 50% A MENOS DE 75%
-        // ====================================================
-
+        // Amarillo: 50% a menos de 75%
         else if (porcentaje >= 50) {
 
             reproducirSonido(
@@ -656,10 +648,7 @@ async function mostrarResultado(
         }
 
 
-        // ====================================================
-        // ROJO: MENOS DE 50%
-        // ====================================================
-
+        // Rojo: menos de 50%
         else {
 
             reproducirSonido(
@@ -668,6 +657,10 @@ async function mostrarResultado(
         }
     }
 
+
+    // ========================================================
+    // GATO
+    // ========================================================
 
     else if (animalElegido === "gato") {
 
@@ -681,20 +674,14 @@ async function mostrarResultado(
         );
 
 
-        // ====================================================
-        // VERDE: 75% O MÁS
-        // ====================================================
-
+        // Verde: 75% o más
         if (porcentaje >= 75) {
 
             reproducirSonidoGato();
         }
 
 
-        // ====================================================
-        // AMARILLO: 50% A MENOS DE 75%
-        // ====================================================
-
+        // Amarillo: 50% a menos de 75%
         else if (porcentaje >= 50) {
 
             reproducirSonido(
@@ -703,10 +690,7 @@ async function mostrarResultado(
         }
 
 
-        // ====================================================
-        // ROJO: MENOS DE 50%
-        // ====================================================
-
+        // Rojo: menos de 50%
         else {
 
             reproducirSonido(
