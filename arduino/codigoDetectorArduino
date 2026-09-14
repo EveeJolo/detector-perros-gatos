@@ -1,0 +1,85 @@
+const int botonPerro = 4;
+const int botonGato = 5;
+
+const int ledVerde = 8;
+const int ledAmarillo = 9;
+const int ledRojo = 10;
+
+char animalElegido = 'N';
+
+void setup() {
+  pinMode(botonPerro, INPUT_PULLUP);
+  pinMode(botonGato, INPUT_PULLUP);
+
+  pinMode(ledVerde, OUTPUT);
+  pinMode(ledAmarillo, OUTPUT);
+  pinMode(ledRojo, OUTPUT);
+
+  Serial.begin(9600);
+
+  apagarLeds();
+}
+
+void loop() {
+
+  // BOTÓN PERRO
+  if (digitalRead(botonPerro) == LOW && animalElegido == 'N') {
+    animalElegido = 'P';
+
+    Serial.println("PERRO");
+
+    delay(300);
+  }
+
+  // BOTÓN GATO
+  if (digitalRead(botonGato) == LOW && animalElegido == 'N') {
+    animalElegido = 'G';
+
+    Serial.println("GATO");
+
+    delay(300);
+  }
+
+  // RECIBIR PORCENTAJE DESDE LA PC
+  if (Serial.available() > 0) {
+
+    int porcentaje = Serial.parseInt();
+
+    while (Serial.available() > 0) {
+      Serial.read();
+    }
+
+    if (animalElegido != 'N') {
+
+      Serial.print("RESULTADO:");
+      Serial.println(porcentaje);
+
+      mostrarResultado(porcentaje);
+
+      // Prepararse para el siguiente niño
+      animalElegido = 'N';
+    }
+  }
+}
+
+void mostrarResultado(int porcentaje) {
+
+  apagarLeds();
+
+  if (porcentaje >= 75) {
+    digitalWrite(ledVerde, HIGH);
+  }
+  else if (porcentaje >= 50) {
+    digitalWrite(ledAmarillo, HIGH);
+  }
+  else {
+    digitalWrite(ledRojo, HIGH);
+  }
+}
+
+void apagarLeds() {
+
+  digitalWrite(ledVerde, LOW);
+  digitalWrite(ledAmarillo, LOW);
+  digitalWrite(ledRojo, LOW);
+}
