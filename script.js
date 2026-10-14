@@ -2,7 +2,7 @@
 // CONFIGURACIÓN
 // ============================================================
 
-const URL = "https://teachablemachine.withgoogle.com/models/JJuE5peJ5/";
+const URL = "https://teachablemachine.withgoogle.com/models/WsDIW5aRU/";
 
 let modelo;
 let webcam;
